@@ -1,5 +1,5 @@
 import sys
-import logging
+from src.logger import logging
 
 def error_message_detail(error_detail:sys):    #error detail is present inside sys
     exc_type , exc_value ,exc_traceback = sys.exc_info()  #exc_tb -> file,line of exception
