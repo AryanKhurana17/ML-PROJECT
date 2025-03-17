@@ -7,8 +7,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
 
-from components.data_transformation import DataTransformation
-from components.data_transformation import DataTransformationConfig
+from src.components.data_transformation import DataTransformation
+from src.components.data_transformation import DataTransformationConfig
 
 @dataclass    #used to directly define our class variable
 class DataIngestionConfig:    #input given , later : will save our train file here
@@ -24,7 +24,7 @@ class DataIngestion:
         #code to read from databases
         logging.info("Entered the data ingestion method or component")
         try:
-            df = pd.read_csv('notebook\data\stud.csv') #from here , we can read it from any database--> mongoDB, MySQL , clipbord , api  etc.
+            df = pd.read_csv('notebook/data/stud.csv') #from here , we can read it from any database--> mongoDB, MySQL , clipbord , api  etc.
             logging.info("Read the dataset as dataframe")
 
             os.makedirs(os.path.dirname(self.ingestion_config.train_data_path) , exist_ok=True)

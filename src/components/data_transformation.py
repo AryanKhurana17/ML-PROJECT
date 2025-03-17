@@ -14,7 +14,7 @@ from src.utils import save_object
 
 @dataclass
 class DataTransformationConfig:  #inputs/paths we'll require   
-    preprocessor_obj_file_path = os.path.join('artifacts' , 'preprocessor.pkl')
+    preprocessor_obj_file_path = os.path.join('artifact' , 'preprocessor.pkl')
 
 class DataTransformation:
     def __init__(self):
@@ -35,24 +35,25 @@ class DataTransformation:
             ]
             num_pipeline = Pipeline(
                 steps = [
-                ("imputer",SimpleImputer(strategy="median"))
+                ("imputer",SimpleImputer(strategy="median")),
                 ("scaler",StandardScaler())
 
                 ]
             )
             cat_pipeline = Pipeline(
-                steps = [
-                ("imputer",SimpleImputer(strategy="most_frequent")) #mode
-                ("one_hot_encoder",OneHotEncoder())
-                ("scaler",StandardScaler())   
-                ]
-            )
-            logging.info("Numerical columns:{categorical_columns}")
-            logging.info("Categorical columns:{numerical_columns}")
+                 steps = [
+                 ("imputer", SimpleImputer(strategy="most_frequent")),  # mode
+                 ("one_hot_encoder", OneHotEncoder(handle_unknown='ignore', sparse_output=False)),  # Convert sparse to dense
+                 ("scaler", StandardScaler(with_mean=False))  #  Fix: Prevents sparse matrix error
+    ]
+)
+
+            logging.info(f"Numerical columns:{numerical_columns}")
+            logging.info(f"Categorical columns:{categorical_columns}")
 
             preprocessor = ColumnTransformer(
                 [
-                ("num_pipeline",num_pipeline,numerical_columns) 
+                ("num_pipeline",num_pipeline,numerical_columns),
                 ("cat_pipeline",cat_pipeline,categorical_columns)  
                 ]
             )
